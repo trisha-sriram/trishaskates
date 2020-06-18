@@ -12,12 +12,12 @@ app.set('view engine', 'ejs');
 
 // index page 
 app.get('/', function(req, res) {
-    res.render('pages/index');
+    res.render('pages/app');
 });
 
 // about page 
-app.get('/about', function(req, res) {
-    res.render('pages/about');
+app.get('/ollie', function(req, res) {
+    res.render('pages/ollie');
 });
 
 var server = app.listen(8081, function () {
