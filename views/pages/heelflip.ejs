@@ -1,16 +1,19 @@
 <!doctype html>
 <html lang="en">
-  <%- include('../partials/head'); -%>
+  <head>
+     <%- include('../partials/head'); -%>
+  </head>
   <body>
     <div class="container">
-  
-     <%- include('../partials/header'); -%>
+  <header class="blog-header py-3">
+    <%- include('../partials/header'); -%>
+  </header>
 
   <%- include('../partials/navigation'); -%>
-  
+
   <div class="jumbotron p-4 p-md-5 text-white rounded bg-primary">
     <div class="col-md-6 px-0">
-      <h1 class="display-4 font-italic">Ollie Skateboarding Progress</h1>
+      <h1 class="display-4 font-italic">Heelflip Skateboarding Progress</h1>
       <p class="lead my-3">Basically a blog about how I progress through skating tricks throughout the summer, and tips + things I learned along the way.</p>
       <p class="lead mb-0"><a href="#" class="text-white font-weight-bold"></a></p>
     </div>
@@ -119,6 +122,8 @@
 
 </main><!-- /.container -->
 
- <%- include('../partials/footer'); -%>
+<footer class="blog-footer">
+  <%- include('../partials/footer'); -%>
+</footer>
 </body>
 </html>
