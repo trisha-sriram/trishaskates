@@ -1,7 +1,10 @@
 var express = require('express');
+var parser = require('body-parser');
 var app = express();
 
 app.set('view engine', 'ejs');
+app.use(parser.urlencoded({ extended: false }))
+app.use(parser.json())
 
 /** use static html then use the code below
 //app.use(express.static('public'));
@@ -73,6 +76,29 @@ app.get('/varial', function(req, res) {
 //Home page
 app.get('/app', function(req, res) {
     res.render('pages/app');
+});
+
+/*app.get('/contact', function(req, res) {
+    res.render('pages/contact');
+});*/
+
+app.get('/contact',function(req,res){
+    res.render('pages/contact',{
+        topicHead : 'Any Questions?',
+    });
+    console.log('user accessing Home page');
+});
+app.post('/contactsubmit',function(req,res){
+    var data = {
+        first : req.body.fname
+    }
+    console.log(data);
+    res.render('pages/contactsubmit',{
+        userValue : data,
+        topicHead : 'Submission Received'
+    });
+    //res.json(student);
+     
 });
 
 var server = app.listen(8081, function () {
