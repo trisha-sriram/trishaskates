@@ -8,14 +8,21 @@
 
 <%- include('../partials/navigation'); -%>
 
-<h1><%= topicHead %></h1>
+<h3 class="submission"><%= topicHead %></h3>
 
 <!-- views/contactsubmit.ejs -->
 
 
 <% if(userValue!=null){ %>    
-        <div> Data Entered as <%= userValue.first %>   </div>
-<%}%> 
+        <div class="data"> Data Entered as <%= userValue.first %> <%= userValue.last %>
+        </div>
+
+        <div class="data">Email: <%= userValue.email %>
+        </div>
+
+        <div class="data">Message or Question: <%= userValue.message %>
+        </div>
+<%}%>
 
 <footer>
     <%- include('../partials/footer'); -%>
