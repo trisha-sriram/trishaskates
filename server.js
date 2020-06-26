@@ -6,8 +6,10 @@ app.set('view engine', 'ejs');
 app.use(parser.urlencoded({ extended: false }))
 app.use(parser.json())
 
+app.use(express.static('public'));
+
 /** use static html then use the code below
-//app.use(express.static('public'));
+
 //app.use('/assets', express.static('assets'));
 /*app.get('/', function (req, res) {
    res.send('Hello World');
@@ -86,11 +88,14 @@ app.get('/contact',function(req,res){
     res.render('pages/contact',{
         topicHead : 'Any Questions?',
     });
-    console.log('user accessing Home page');
+    console.log('user accessing contact page');
 });
 app.post('/contactsubmit',function(req,res){
     var data = {
-        first : req.body.fname
+        first : req.body.fname,
+        last : req.body.lname,
+        email : req.body.email,
+        message : req.body.msg
     }
     console.log(data);
     res.render('pages/contactsubmit',{
