@@ -1,0 +1,29 @@
+
+.questions {
+	color: DarkBlue;
+	position:relative;
+	left: 40px;
+}
+
+label {
+	color: RoyalBlue;
+	position:relative;
+	left: 40px;
+}
+
+.submission {
+	color: DarkBlue;
+	position:relative;
+	left: 40px;
+
+}
+
+.txtbox {
+	position:relative;
+	left: 40px;
+}
+
+.data {
+	position:relative;
+	left: 40px;
+}
