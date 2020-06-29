@@ -1,9 +1,14 @@
 var express = require('express');
 var parser = require('body-parser');
 var app = express();
+var request = require('superagent')
+
+//var Mailchimp = require('mailchimp-api-v3')
+
+//var mailchimp = new Mailchimp('7c3587371a05d1954e708b7b8ed5e5e8-us10');
 
 app.set('view engine', 'ejs');
-app.use(parser.urlencoded({ extended: false }))
+app.use(parser.urlencoded({ extended: true }))
 app.use(parser.json())
 
 app.use(express.static('public'));
@@ -90,8 +95,37 @@ app.get('/contact',function(req,res){
     });
     console.log('user accessing contact page');
 });
+
+var mailchimpInstance = 'us10',
+    listUniqueId = "61dccfa4c5",
+    mailchimpApiKey = '7c3587371a05d1954e708b7b8ed5e5e8-us10';
+
 app.post('/contactsubmit',function(req,res){
-    var data = {
+    request
+        .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
+        .set('Content-Type', 'application/json;charset=utf-8')
+        .set('Authorization', 'Basic ' + new Buffer.from('any:' + mailchimpApiKey ).toString('base64'))
+        .send({
+          'email_address': req.body.email,
+          'status': 'subscribed',
+          //'fname': req.body.fname,
+          //'lname': req.body.lname,
+          //'msg': req.body.msg
+          'merge_fields': {
+            'FNAME':req.body.fname,
+            'LNAME':req.body.lname
+            //'msg': req.body.msg
+          }
+        })
+        .end(function(err, response) {
+              //console.log(response);
+              if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
+                res.send('Signed Up!');
+              } else {
+                res.send('Sign Up Failed :(');
+              }
+          });
+    /*var data = {
         first : req.body.fname,
         last : req.body.lname,
         email : req.body.email,
@@ -101,7 +135,7 @@ app.post('/contactsubmit',function(req,res){
     res.render('pages/contactsubmit',{
         userValue : data,
         topicHead : 'Submission Received'
-    });
+    });*/
     //res.json(student);
      
 });
