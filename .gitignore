@@ -1,0 +1,5 @@
+# config file and log files#
+######################
+config.json
+*.log
+.DS_Store
