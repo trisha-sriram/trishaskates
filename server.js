@@ -3,6 +3,16 @@ var parser = require('body-parser');
 var app = express();
 var request = require('superagent')
 var config = require('./config.json');
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: config.dbusername,
+  password: config.dbpassword,
+  database: config.dbname
+});
+
+
 //console.log(config.username);
 //var Mailchimp = require('mailchimp-api-v3')
 
@@ -126,17 +136,28 @@ app.post('/contactsubmit',function(req,res){
                 res.send('Sign Up Failed :(');
               }*/
               if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
-                  var data = {
-                    first : req.body.fname,
-                    last : req.body.lname,
-                    email : req.body.email,
-                    message : req.body.msg
-                    }
-                    console.log(data);
-                    res.render('pages/contactsubmit',{
-                        userValue : data,
-                        topicHead : 'Submission Received'
-                    });
+                  
+                 con.connect(function(err) {
+                 if (err) throw err;
+                      console.log("Connected!");
+                      var sql = "INSERT INTO trisha_users (first_name, last_name, email, message) VALUES  ('"+req.body.fname+"','"+ req.body.lname+"','"+ req.body.email+ "','"+ req.body.msg+ "')";;
+                      con.query(sql, function (err, result) {
+                        if (err) throw err;
+                        var data = {
+                            first : req.body.fname,
+                            last : req.body.lname,
+                            email : req.body.email,
+                            message : req.body.msg
+                            }
+                            console.log(data);
+                            res.render('pages/contactsubmit',{
+                                userValue : data,
+                                topicHead : 'Submission Received'
+                            });
+                      });
+                  });
+
+                  
                     //res.send('Signed Up!');
               }
               else {
