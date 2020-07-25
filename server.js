@@ -2,7 +2,8 @@ var express = require('express');
 var parser = require('body-parser');
 var app = express();
 var request = require('superagent')
-
+var config = require('./config.json');
+//console.log(config.username);
 //var Mailchimp = require('mailchimp-api-v3')
 
 //var mailchimp = new Mailchimp('7c3587371a05d1954e708b7b8ed5e5e8-us10');
@@ -96,9 +97,9 @@ app.get('/contact',function(req,res){
     console.log('user accessing contact page');
 });
 
-var mailchimpInstance = 'us10',
-    listUniqueId = "61dccfa4c5",
-    mailchimpApiKey = '7c3587371a05d1954e708b7b8ed5e5e8-us10';
+var mailchimpInstance = config.mailchimpInstance,
+    listUniqueId = config.listUniqueId,
+    mailchimpApiKey = config.mailchimpapikey
 
 app.post('/contactsubmit',function(req,res){
     request
@@ -119,11 +120,29 @@ app.post('/contactsubmit',function(req,res){
         })
         .end(function(err, response) {
               //console.log(response);
-              if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
+              /*if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
                 res.send('Signed Up!');
               } else {
                 res.send('Sign Up Failed :(');
+              }*/
+              if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
+                  var data = {
+                    first : req.body.fname,
+                    last : req.body.lname,
+                    email : req.body.email,
+                    message : req.body.msg
+                    }
+                    console.log(data);
+                    res.render('pages/contactsubmit',{
+                        userValue : data,
+                        topicHead : 'Submission Received'
+                    });
+                    //res.send('Signed Up!');
               }
+              else {
+                res.send('Sign Up Failed :(');
+              }
+
           });
     /*var data = {
         first : req.body.fname,
